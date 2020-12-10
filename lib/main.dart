@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'containers/HomePage.dart';
+import 'containers/HomePage/HomePage.dart';
 
 void main() {
   runApp(App());
@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
-      home: HomePage(title: 'Ziplock'),
+      home: HomePage(),
     );
   }
 }
