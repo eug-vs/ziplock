@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './SearchForm.dart';
 
 
 class FormPage extends StatelessWidget {
@@ -10,7 +11,10 @@ class FormPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Add new ZIP-code'),
       ),
-      body: Text('Form is displayed here'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+        child: SearchForm()
+      ),
     );
   }
 }
