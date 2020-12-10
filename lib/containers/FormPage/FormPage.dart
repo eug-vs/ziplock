@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import './SearchForm.dart';
 import '../../components/ZipCodeCard/ZipCodeCard.dart';
 import '../../components/ZipCodeCard/ZipCode.dart';
+
+// TODO: load from env? Wtf, where do they even store these on mobile?
+final API_BASE_URL = 'https://www.zipcodeapi.com/rest';
+final API_TOKEN = 'An4UrDOAosu7lwfelRW1qTzXrYeaZ6n1ahwJqmPx74s2qLayMsMqeA7pzUqguYC2';
 
 
 class FormPage extends StatefulWidget {
@@ -13,9 +19,24 @@ class FormPage extends StatefulWidget {
 
 
 class _FormPageState extends State<FormPage> {
-  final List<ZipCode> _zipCodes = [
-    new ZipCode(code: '123', city: 'Ohio', stateCode: 'OH')
-  ];
+  List<ZipCode> _zipCodes = [];
+
+  // TODO: implement pagination (if API supports it)
+  Future<void> fetchZipCodes(String city, String stateCode) async {
+    final requestUrl = '$API_BASE_URL/$API_TOKEN/city-zips.json/$city/$stateCode';
+    print('Fetching $requestUrl');
+    final response = await get(requestUrl);
+    if (response.statusCode == 200) {
+      setState(() {
+        _zipCodes = List<String>
+            .from(jsonDecode(response.body)['zip_codes'])
+            .map((String code) => new ZipCode(code: code, city: city, stateCode: stateCode))
+            .toList();
+      });
+    } else {
+      throw Exception('Failed to fetch zip-codes');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +48,7 @@ class _FormPageState extends State<FormPage> {
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
         child: Column(
           children: <Widget>[
-            SearchForm(),
+            SearchForm(handleSubmit: fetchZipCodes),
             Expanded(
               child: ListView(
                 children: _zipCodes.map((ZipCode zipCode) => ZipCodeCard(zipCode: zipCode)).toList()
