@@ -49,11 +49,11 @@ class _FormPageState extends State<FormPage> {
         child: Column(
           children: <Widget>[
             SearchForm(handleSubmit: fetchZipCodes),
-            Expanded(
+            _zipCodes.length > 0 ? Expanded(
               child: ListView(
                 children: _zipCodes.map((ZipCode zipCode) => ZipCodeCard(zipCode: zipCode)).toList()
               ),
-            )
+            ) : Text('Try something like [New York, NY] or [Phoenix, AZ]'),
           ]
         )
       ),

@@ -57,7 +57,7 @@ class _SearchFormState extends State<SearchForm> {
                   widget.handleSubmit(cityController.text, stateCodeController.text);
                 }
               },
-              child: Text('Find ZIP-code'),
+              child: Text('Find ZIP-codes'),
             ),
           ),
         ],
