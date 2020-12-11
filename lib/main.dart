@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'containers/HomePage/HomePage.dart';
+import './DatabaseService.dart';
 
 void main() {
+  DatabaseService();
   runApp(App());
 }
 

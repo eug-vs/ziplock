@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import './ZipCode.dart';
+import '../../DatabaseService.dart';
 
 // TODO: make stateful?
 class ZipCodeCard extends StatelessWidget {
   ZipCodeCard({Key key, this.zipCode}) : super(key: key);
-
+  final DatabaseService databaseService = DatabaseService();
   final ZipCode zipCode;
 
   @override
@@ -17,8 +18,9 @@ class ZipCodeCard extends StatelessWidget {
           subtitle: Text(this.zipCode.location()),
           trailing: TextButton(
             child: const Text('Save'),
-            onPressed: () {
-              // TODO: handle press
+            onPressed: () async {
+              final id = await databaseService.insertZipCode(zipCode);
+              print('Zip code saved to local database with id $id');
             },
           ),
         )
