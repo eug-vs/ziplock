@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class SearchForm extends StatefulWidget {
   SearchForm({Key key, this.handleSubmit }) : super(key: key);
 
-  final Function(String, String) handleSubmit;
+  final Function(String, String, String) handleSubmit;
 
   @override
   _SearchFormState createState() => _SearchFormState();
@@ -14,6 +14,7 @@ class _SearchFormState extends State<SearchForm> {
   final _formKey = GlobalKey<FormState>();
   final cityController = TextEditingController();
   final stateCodeController = TextEditingController();
+  final tokenController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +50,28 @@ class _SearchFormState extends State<SearchForm> {
             },
             controller: stateCodeController,
           ),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'API token*',
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please fill in this field';
+              }
+              return null;
+            },
+            controller: tokenController,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
-                  widget.handleSubmit(cityController.text, stateCodeController.text);
+                  widget.handleSubmit(
+                    cityController.text,
+                    stateCodeController.text,
+                    tokenController.text,
+                  );
                 }
               },
               child: Text('Find ZIP-codes'),

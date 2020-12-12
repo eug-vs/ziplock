@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 import './SearchForm.dart';
 import '../../components/ZipCodeCard/ZipCodeCard.dart';
 import '../../components/ZipCodeCard/ZipCode.dart';
 
 // TODO: load from env? Wtf, where do they even store these on mobile?
 final API_BASE_URL = 'https://www.zipcodeapi.com/rest';
-final API_TOKEN = 'VtTFmXpCWVRjqbJ8sV2fmNYH4ciX2gyyPZonHX8dkjeE8sLYhr3ZwtyiuZVWBw6a';
+final TOKEN_URL = 'https://www.zipcodeapi.com/API#locToZips';
 
 
 class FormPage extends StatefulWidget {
@@ -22,8 +23,8 @@ class _FormPageState extends State<FormPage> {
   List<ZipCode> _zipCodes = [];
 
   // TODO: implement pagination (if API supports it)
-  Future<void> fetchZipCodes(String city, String stateCode) async {
-    final requestUrl = '$API_BASE_URL/$API_TOKEN/city-zips.json/$city/$stateCode';
+  Future<void> fetchZipCodes(String city, String stateCode, String token) async {
+    final requestUrl = '$API_BASE_URL/$token/city-zips.json/$city/$stateCode';
     print('Fetching $requestUrl');
     final response = await get(requestUrl);
     if (response.statusCode == 200) {
@@ -53,7 +54,24 @@ class _FormPageState extends State<FormPage> {
               child: ListView(
                 children: _zipCodes.map((ZipCode zipCode) => ZipCodeCard(zipCode: zipCode)).toList()
               ),
-            ) : Text('Try something like [New York, NY] or [Phoenix, AZ]'),
+            ) : Column(
+              children: <Widget>[
+                Text('Try something like [New York, NY] or [Phoenix, AZ]'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (await canLaunch(TOKEN_URL)) {
+                        await launch(TOKEN_URL);
+                      } else {
+                        throw 'Could not launch $TOKEN_URL';
+                      }
+                    },
+                    child: Text('Get API token'),
+                  ),
+                ),
+              ]
+            )
           ]
         )
       ),
