@@ -3,7 +3,6 @@ import 'containers/HomePage/HomePage.dart';
 import './DatabaseService.dart';
 
 void main() {
-  DatabaseService();
   runApp(App());
 }
 

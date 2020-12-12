@@ -3,49 +3,56 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import './components/ZipCodeCard/ZipCode.dart';
 
-final tableName = "zip_codes";
-
+final DB_NAME = 'ziplock.db';
+final TABLE_NAME = 'zipcodes';
 
 class DatabaseService {
-  static final DatabaseService _instance = DatabaseService._internal();
-  Future<Database> database;
+  DatabaseService._();
 
-  factory DatabaseService() {
-    return _instance;
+  static final DatabaseService db = DatabaseService._();
+  static Database _database;
+
+  Future<Database> get database async {
+    if (_database != null) return _database;
+
+    // if _database is null we instantiate it
+    _database = await initDB();
+    return _database;
   }
 
-  DatabaseService._internal() {
-    initDatabase();
-  }
-
-  initDatabase() async {
-    database = openDatabase(
-      join(await getDatabasesPath(), 'beautiful_alarm.db'),
-      onCreate: (db, version) {
-        db.execute(
-          '''CREATE TABLE $tableName(
+  Future<Database> initDB() async {
+    print("initDB executed");
+    String path = join(await getDatabasesPath(), DB_NAME);
+    await deleteDatabase(path);
+    return await openDatabase(
+        path,
+        version: 1,
+        onCreate: (Database db, int version) async {
+          await db.execute(
+            '''
+            CREATE TABLE IF NOT EXISTS $TABLE_NAME (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               code TEXT,
               city TEXT,
               stateCode TEXT
-            )
-          ''',
-        );
-      },
-      version: 1,
+            );
+            ''',
+          );
+        }
     );
   }
 
   Future<int> insertZipCode(ZipCode zipCode) async {
-    Database db = await database;
-    int id = await db.insert(tableName, zipCode.toMap());
+    final db = await database;
+    int id = await db.insert(TABLE_NAME, zipCode.toMap());
     return id;
   }
 
+
   Future<List<ZipCode>> listZipCodes() async {
     // TODO: pass some args
-    Database db = await database;
-    List<Map> results = await db.query(tableName);
+    final db = await database;
+    List<Map> results = await db.query(TABLE_NAME);
     return results.map((Map result) => ZipCode.fromMap(result)).toList(); 
   }
 }

@@ -7,7 +7,7 @@ import '../../components/ZipCodeCard/ZipCode.dart';
 
 // TODO: load from env? Wtf, where do they even store these on mobile?
 final API_BASE_URL = 'https://www.zipcodeapi.com/rest';
-final API_TOKEN = 'An4UrDOAosu7lwfelRW1qTzXrYeaZ6n1ahwJqmPx74s2qLayMsMqeA7pzUqguYC2';
+final API_TOKEN = 'VtTFmXpCWVRjqbJ8sV2fmNYH4ciX2gyyPZonHX8dkjeE8sLYhr3ZwtyiuZVWBw6a';
 
 
 class FormPage extends StatefulWidget {
