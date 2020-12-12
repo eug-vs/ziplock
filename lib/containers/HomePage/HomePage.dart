@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../FormPage/FormPage.dart';
+import '../SavedPage/SavedPage.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -11,7 +12,21 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Ziplock'),
       ),
-      body: Text('Nothing interesting here yet'),
+
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text('Ziplock is an application to manage your zip-codes.'),
+          TextButton(
+            child: const Text('My collection'),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SavedPage())
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
             context,
