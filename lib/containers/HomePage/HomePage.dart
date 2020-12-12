@@ -13,19 +13,22 @@ class HomePage extends StatelessWidget {
         title: Text('Ziplock'),
       ),
 
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text('Ziplock is an application to manage your zip-codes.'),
-          TextButton(
-            child: const Text('My collection'),
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SavedPage())
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text('Ziplock is an application to manage your zip-codes.'),
+            ElevatedButton(
+              child: const Text('My collection'),
+              onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SavedPage())
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.push(
