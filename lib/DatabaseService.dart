@@ -55,4 +55,14 @@ class DatabaseService {
     List<Map> results = await db.query(TABLE_NAME);
     return results.map((Map result) => ZipCode.fromMap(result)).toList(); 
   }
+
+  Future<bool> isZipCodeSaved(String code) async {
+    final db = await database;
+    List<Map> results = await db.query(
+      TABLE_NAME,
+      where: 'code = (?)',
+      whereArgs: [code],
+    );
+    return results.length > 0;
+  }
 }
